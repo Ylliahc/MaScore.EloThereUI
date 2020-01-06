@@ -1,0 +1,9 @@
+@inherits TestBase
+@page "/test"
+
+<p>Test</p>
+
+<EditForm Model="@_TestForm" OnValidSubmit="@HandleValidSubmit">
+    <InputText id="gameTypeId" @bind-Value="@_TestForm.GameTypeId" ></InputText>
+    <button type="submit">Submit</button>
+</EditForm>
