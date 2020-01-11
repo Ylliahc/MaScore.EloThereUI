@@ -28,7 +28,7 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor();
+            services.AddServerSideBlazor(); 
             services.AddSingleton<WeatherForecastService>();
 
             services.Configure<MaScore.EloThereUI.Infrastructure.Configurations.MaScoreClientConfiguration>(Configuration.GetSection("MaScoreApi"));

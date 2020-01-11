@@ -7,18 +7,16 @@ namespace WebApp
 {
     public class TestBase : ComponentBase
     {
-        private readonly GameTypeService _gameTypeService;
+        [Inject]
+        private GameTypeService _gameTypeService {get;set;}
         public WebApp.ViewModels.TestForm _TestForm = new ViewModels.TestForm();
 
-        /*public TestBase(MaScore.EloThereUI.Application.Services.GameTypeService gameTypeService)
-        {
-            _gameTypeService = gameTypeService;
-        }*/
+        public string GameTypeName {get;set;}
 
         public async Task HandleValidSubmit()
         {
-            Console.WriteLine(_TestForm.GameTypeId);
-            await _gameTypeService.Get(_TestForm.GameTypeId);
+            var gameType = await _gameTypeService.Get(_TestForm.GameTypeId);
+            GameTypeName = gameType.Name;
         }
     }
 }
