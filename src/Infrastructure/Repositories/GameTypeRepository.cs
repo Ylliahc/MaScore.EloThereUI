@@ -8,19 +8,14 @@ using Newtonsoft.Json;
 
 namespace MaScore.EloThereUI.Infrastructure.Repositories
 {
-    public class GameTypeRepository : IGameTypeRepository
+    public class GameTypeRepository : MaScoreRepositoryBase , IGameTypeRepository
     {
-        private readonly HttpClient _httpClient;
-        private readonly MaScoreClientConfiguration _maScoreClientConfiguration;
 
         public GameTypeRepository(
             HttpClient httpClient,
-            IOptions<MaScoreClientConfiguration> maScoreClientConfiguration)
+            IOptions<MaScoreClientConfiguration> maScoreClientConfiguration) : base(httpClient,maScoreClientConfiguration)
         {
-            _httpClient = httpClient;
-            _maScoreClientConfiguration = maScoreClientConfiguration.Value;
-
-            _httpClient.BaseAddress = new System.Uri(_maScoreClientConfiguration.Url);
+            
         }
         public async Task<GameType> GetByPlayerIdAsync(string playerId)
         {
