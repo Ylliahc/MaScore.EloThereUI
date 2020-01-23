@@ -15,7 +15,7 @@ namespace WebApp
 
         public async Task HandleValidSubmit()
         {
-            var gameType = await _gameTypeService.Get(_TestForm.GameTypeId);
+            var gameType = await _gameTypeService.GetAsync(_TestForm.GameTypeId);
             GameTypeName = gameType.Name;
         }
     }

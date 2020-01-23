@@ -13,7 +13,7 @@ namespace MaScore.EloThereUI.Application.Services
             _gameTypeRepository = gameTypeRepository;
         }
 
-        public async Task<GameType> Get(string gameTypeId)
+        public async Task<GameType> GetAsync(string gameTypeId)
         {
             return await _gameTypeRepository.GetAsync(gameTypeId);
         }
