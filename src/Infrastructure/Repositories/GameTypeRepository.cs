@@ -5,6 +5,7 @@ using MaScore.EloThereUI.Domain.Entities;
 using MaScore.EloThereUI.Domain.Repositories;
 using MaScore.EloThereUI.Infrastructure.Configurations;
 using Newtonsoft.Json;
+using MaScore.EloThereUI.Infrastructure.Clients;
 
 namespace MaScore.EloThereUI.Infrastructure.Repositories
 {
@@ -12,7 +13,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
     {
 
         public GameTypeRepository(
-            HttpClient httpClient,
+            MaScoreApiClient httpClient,
             IOptions<MaScoreClientConfiguration> maScoreClientConfiguration) : base(httpClient,maScoreClientConfiguration)
         {
             
@@ -39,7 +40,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
             }
 
             var url = $"{_maScoreClientConfiguration.GameTypeResource.ResourceName}/{gameTypeId}";
-            var httpResponseMessage = (await _httpClient.GetAsync(url)).EnsureSuccessStatusCode();
+            var httpResponseMessage = await _httpClient.GetAsync(url);
             
             return JsonConvert.DeserializeObject<GameType>( await httpResponseMessage.Content.ReadAsStringAsync());
         }

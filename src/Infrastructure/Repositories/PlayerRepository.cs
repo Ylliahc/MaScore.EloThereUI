@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using MaScore.EloThereUI.Domain.Entities;
 using MaScore.EloThereUI.Domain.Repositories;
+using MaScore.EloThereUI.Infrastructure.Clients;
 using MaScore.EloThereUI.Infrastructure.Configurations;
 using Microsoft.Extensions.Options;
 
@@ -12,7 +12,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
     {
 
         public PlayerRepository(
-            HttpClient httpClient,
+            MaScoreApiClient httpClient,
             IOptions<MaScoreClientConfiguration> maScoreClientConfiguration) : base(httpClient,maScoreClientConfiguration)
         {
 

@@ -1,6 +1,5 @@
 using MaScore.EloThereUI.Application.Services;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Threading.Tasks;
 
 namespace WebApp

@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApp.Data;
-using MaScore.EloThereUI;
 
 namespace WebApp
 {
@@ -33,9 +26,9 @@ namespace WebApp
 
             services.Configure<MaScore.EloThereUI.Infrastructure.Configurations.MaScoreClientConfiguration>(Configuration.GetSection("MaScoreApi"));
 
-            services.AddHttpClient<MaScore.EloThereUI.Domain.Repositories.IGameTypeRepository,
-                MaScore.EloThereUI.Infrastructure.Repositories.GameTypeRepository>();
+            services.AddHttpClient<MaScore.EloThereUI.Infrastructure.Clients.MaScoreApiClient>();
 
+            services.AddTransient<MaScore.EloThereUI.Domain.Repositories.IGameTypeRepository, MaScore.EloThereUI.Infrastructure.Repositories.GameTypeRepository>();
             services.AddTransient<MaScore.EloThereUI.Application.Services.GameTypeService>();
         }
 
