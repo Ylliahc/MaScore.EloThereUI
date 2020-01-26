@@ -35,10 +35,10 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
         /// </summary>
         /// <param name="endpoint">Endpoint to use/contact</param>
         /// <param name="body">Body object</param>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TInput">Class in input</typeparam>
         /// <returns>Http response message.</returns>
-        public async Task<HttpResponseMessage> PostAsync<T>(string endpoint, T body)
-            where T : class
+        public async Task<HttpResponseMessage> PostAsync<TInput>(string endpoint, TInput body)
+            where TInput : class
         {
             if(body == null)
                 throw new System.ArgumentNullException(nameof(body));
@@ -53,6 +53,21 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
         }
 
         /// <summary>
+        /// Handle generics processes for a post request
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="body"></param>
+        /// <typeparam name="TInput">Class in input</typeparam>
+        /// <typeparam name="TOutput">Class in output</typeparam>
+        /// <returns></returns>
+        public async Task<TOutput> PostAsync<TInput,TOutput>(string endpoint, TInput body)
+            where TInput : class
+        {
+            var response = await PostAsync<TInput>(endpoint, body);
+            return await DeserializeObject<TOutput>(response);
+        }
+
+        /// <summary>
         /// Handke generics processes for a get request
         /// </summary>
         /// <param name="url"></param>
@@ -62,6 +77,29 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
             var response = await Client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return response;
+        }
+
+        /// <summary>
+        /// Handke generics processes for a get request and deserialize the result
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>Http response message.</returns>
+        public async Task<T> GetAsync<T>(string url)
+        {
+            var response = await GetAsync(url);
+            return await DeserializeObject<T>(response);
+        }
+
+        /// <summary>
+        /// Deserialize content of a http response
+        /// </summary>
+        /// <param name="httpResponseMessage"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private async Task<T> DeserializeObject<T>(HttpResponseMessage httpResponseMessage)
+        {
+            var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(responseContent);
         }
     }
 }

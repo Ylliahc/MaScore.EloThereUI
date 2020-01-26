@@ -22,9 +22,11 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task<List<Player>> GetAllAsync()
+        public async Task<List<Player>> GetAllAsync()
         {
-            throw new System.NotImplementedException();
+            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}";
+            var response = await _httpClient.GetAsync<List<Player>>(url);
+            return response;
         }
 
         public Task<Player> GetPlayerAsync(string id)
