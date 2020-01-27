@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using MaScore.EloThereUI.Domain.Entities;
 using MaScore.EloThereUI.Domain.Repositories;
@@ -17,9 +18,21 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
         {
 
         }   
-        public Task AddGameTypeAsync(string playerId, string gameTypeId)
+        public async Task AddGameTypeAsync(string playerId, string gameTypeId)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(playerId))
+            {
+                throw new System.ArgumentException("message", nameof(playerId));
+            }
+
+            if (string.IsNullOrWhiteSpace(gameTypeId))
+            {
+                throw new System.ArgumentException("message", nameof(gameTypeId));
+            }
+            var playerIdEncoded = WebUtility.UrlEncode(playerId);
+            var gameTypeIdEncoded =  WebUtility.UrlEncode(gameTypeId);
+            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{playerIdEncoded}/{_maScoreClientConfiguration.PlayerResourceConfiguration.PutAddGameTypeEndpoint}?gameTypeId={gameTypeIdEncoded}";
+            
         }
 
         public async Task<List<Player>> GetAllAsync()
@@ -29,17 +42,29 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
             return response;
         }
 
-        public Task<Player> GetPlayerAsync(string id)
+        public async Task<Player> GetPlayerAsync(string id)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new System.ArgumentException("message", nameof(id));
+            }
+
+            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{id}";
+            return await _httpClient.GetAsync<Player>(id);
         }
 
-        public Task<List<Player>> GetPlayersByGameTypeAsync(string gameTypeId)
+        public async Task<List<Player>> GetPlayersByGameTypeAsync(string gameTypeId)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrWhiteSpace(gameTypeId))
+            {
+                throw new System.ArgumentException("message", nameof(gameTypeId));
+            }
+
+            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{_maScoreClientConfiguration.PlayerResourceConfiguration.GetByGameTypeIdEndpoint}";
+            return await _httpClient.GetAsync<List<Player>>(url);
         }
 
-        public Task RemoveGameTypeAsync(string playerId, string gameTypeId)
+        public async Task RemoveGameTypeAsync(string playerId, string gameTypeId)
         {
             throw new System.NotImplementedException();
         }

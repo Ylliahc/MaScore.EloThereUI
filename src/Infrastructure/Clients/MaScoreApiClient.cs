@@ -40,12 +40,15 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
         public async Task<HttpResponseMessage> PostAsync<TInput>(string endpoint, TInput body)
             where TInput : class
         {
-            if(body == null)
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                throw new System.ArgumentException("message", nameof(endpoint));
+            }
+
+            if (body == null)
                 throw new System.ArgumentNullException(nameof(body));
-            string bodySerialized = JsonConvert.SerializeObject(body);
-            StringContent bodyContent = new StringContent(
-                content: bodySerialized,
-                encoding: Encoding.UTF8);
+            
+            var bodyContent = GetStringContent(body);
             
             var response = await Client.PostAsync(endpoint, bodyContent);
             response.EnsureSuccessStatusCode();
@@ -91,6 +94,40 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="body"></param>
+        /// <typeparam name="TInput"></typeparam>
+        /// <returns></returns>
+        public async Task<HttpResponseMessage> PutAsync<TInput>(string endpoint,TInput body)
+            where TInput : class
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                throw new System.ArgumentException("message", nameof(endpoint));
+            }
+
+            if (body is null)
+            {
+                throw new System.ArgumentNullException(nameof(body));
+            }
+
+            var bodyContent = GetStringContent(body);
+            return await Client.PutAsync(endpoint, bodyContent);
+        }
+
+        public async Task<HttpResponseMessage> PutAsync(string request)
+        {
+            if (string.IsNullOrWhiteSpace(request))
+            {
+                throw new System.ArgumentException("message", nameof(request));
+            }
+            //TODO : see use of HttpRequestMessage and Client.SendAsync
+            return await Client.PutAsync(request, new StringContent(string.Empty));
+        }
+
+        /// <summary>
         /// Deserialize content of a http response
         /// </summary>
         /// <param name="httpResponseMessage"></param>
@@ -100,6 +137,21 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
         {
             var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<T>(responseContent);
+        }
+        
+        /// <summary>
+        /// Create a string content from an object
+        /// </summary>
+        /// <param name="body">Object to serialize.</param>
+        /// <typeparam name="TInput"></typeparam>
+        /// <returns>Object serialized</returns>
+        private StringContent GetStringContent<TInput>(TInput body)
+            where TInput : class
+        {
+            string bodySerialized = JsonConvert.SerializeObject(body);
+            return new StringContent(
+                content: bodySerialized,
+                encoding: Encoding.UTF8);
         }
     }
 }
