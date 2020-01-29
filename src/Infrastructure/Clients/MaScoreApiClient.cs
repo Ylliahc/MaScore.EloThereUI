@@ -117,6 +117,11 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
             return await Client.PutAsync(endpoint, bodyContent);
         }
 
+        /// <summary>
+        /// Handle a put message without a body
+        /// </summary>
+        /// <param name="request">request uri</param>
+        /// <returns></returns>
         public async Task<HttpResponseMessage> PutAsync(string request)
         {
             if (string.IsNullOrWhiteSpace(request))
@@ -124,7 +129,8 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
                 throw new System.ArgumentException("message", nameof(request));
             }
             //TODO : see use of HttpRequestMessage and Client.SendAsync
-            return await Client.PutAsync(request, new StringContent(string.Empty));
+            var requestMessage = new HttpRequestMessage(HttpMethod.Put,request);
+            return await Client.SendAsync(requestMessage);
         }
 
         /// <summary>
