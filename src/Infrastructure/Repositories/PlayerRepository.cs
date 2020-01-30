@@ -29,10 +29,10 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
             {
                 throw new System.ArgumentException("message", nameof(gameTypeId));
             }
-            var playerIdEncoded = WebUtility.UrlEncode(playerId);
-            var gameTypeIdEncoded =  WebUtility.UrlEncode(gameTypeId);
+            var playerIdEncoded = WebUtility.UrlEncode(value: playerId);
+            var gameTypeIdEncoded =  WebUtility.UrlEncode(value: gameTypeId);
             var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{playerIdEncoded}/{_maScoreClientConfiguration.PlayerResourceConfiguration.PutAddGameTypeEndpoint}?gameTypeId={gameTypeIdEncoded}";
-            
+            await _httpClient.PutAsync(url);
         }
 
         public async Task<List<Player>> GetAllAsync()
@@ -66,7 +66,10 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
 
         public async Task RemoveGameTypeAsync(string playerId, string gameTypeId)
         {
-            throw new System.NotImplementedException();
+            var playerIdEncoded = WebUtility.UrlEncode(value: playerId);
+            var gameTypeIdEncoded =  WebUtility.UrlEncode(value: gameTypeId);
+            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{playerIdEncoded}/{_maScoreClientConfiguration.PlayerResourceConfiguration.PutRemoveGameTypeEndpoint}?gameTypeId={gameTypeIdEncoded}";
+            await _httpClient.PutAsync(url);
         }
     }
 }
