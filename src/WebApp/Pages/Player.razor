@@ -5,6 +5,7 @@
 
 <p>Test</p>
 
-<input type="text" @bind="PlayerId" />
+<input type="text" @bind-value="PlayerId" />
+<button onclick="@GetPlayer()">Test</button>
 
-<PlayerGeneralPartComponent PlayerGeneralInformationViewModel="@PlayerGeneralInformationViewModel"></PlayerGeneralPartComponent>
+<PlayerGeneralPartComponent @bind-PlayerGeneralInformationViewModel="@PlayerGeneralInformationViewModel"></PlayerGeneralPartComponent>

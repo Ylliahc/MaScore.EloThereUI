@@ -16,6 +16,8 @@ namespace WebApp
 
         public async Task GetPlayer()
         {
+            if(string.IsNullOrWhiteSpace(PlayerId))
+                return;
             var player = await PlayerService.GetPlayer(PlayerId);
 
             if(PlayerGeneralInformationViewModel == null)

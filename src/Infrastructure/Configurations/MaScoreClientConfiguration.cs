@@ -4,6 +4,6 @@ namespace MaScore.EloThereUI.Infrastructure.Configurations
     {
         public string Url { get; set; }
         public GameTypeResourceConfiguration GameTypeResource {get;set;}
-        public PlayerResourceConfiguration PlayerResourceConfiguration {get;set;}
+        public PlayerResourceConfiguration PlayerResource {get;set;}
     }
 }

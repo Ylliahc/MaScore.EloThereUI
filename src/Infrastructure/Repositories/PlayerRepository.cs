@@ -31,13 +31,13 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
             }
             var playerIdEncoded = WebUtility.UrlEncode(value: playerId);
             var gameTypeIdEncoded =  WebUtility.UrlEncode(value: gameTypeId);
-            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{playerIdEncoded}/{_maScoreClientConfiguration.PlayerResourceConfiguration.PutAddGameTypeEndpoint}?gameTypeId={gameTypeIdEncoded}";
+            var url = $"api/{_maScoreClientConfiguration.PlayerResource.ResourceName}/{playerIdEncoded}/{_maScoreClientConfiguration.PlayerResource.PutAddGameTypeEndpoint}?gameTypeId={gameTypeIdEncoded}";
             await _httpClient.PutAsync(url);
         }
 
         public async Task<List<Player>> GetAllAsync()
         {
-            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}";
+            var url = $"{_maScoreClientConfiguration.PlayerResource.ResourceName}";
             var response = await _httpClient.GetAsync<List<Player>>(url);
             return response;
         }
@@ -49,8 +49,8 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
                 throw new System.ArgumentException("message", nameof(id));
             }
 
-            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{id}";
-            return await _httpClient.GetAsync<Player>(id);
+            var url = $"{_maScoreClientConfiguration.PlayerResource.ResourceName}/{id}";
+            return await _httpClient.GetAsync<Player>(url);
         }
 
         public async Task<List<Player>> GetPlayersByGameTypeAsync(string gameTypeId)
@@ -60,7 +60,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
                 throw new System.ArgumentException("message", nameof(gameTypeId));
             }
 
-            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{_maScoreClientConfiguration.PlayerResourceConfiguration.GetByGameTypeIdEndpoint}";
+            var url = $"{_maScoreClientConfiguration.PlayerResource.ResourceName}/{_maScoreClientConfiguration.PlayerResource.GetByGameTypeIdEndpoint}";
             return await _httpClient.GetAsync<List<Player>>(url);
         }
 
@@ -68,7 +68,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
         {
             var playerIdEncoded = WebUtility.UrlEncode(value: playerId);
             var gameTypeIdEncoded =  WebUtility.UrlEncode(value: gameTypeId);
-            var url = $"api/{_maScoreClientConfiguration.PlayerResourceConfiguration.ResourceName}/{playerIdEncoded}/{_maScoreClientConfiguration.PlayerResourceConfiguration.PutRemoveGameTypeEndpoint}?gameTypeId={gameTypeIdEncoded}";
+            var url = $"{_maScoreClientConfiguration.PlayerResource.ResourceName}/{playerIdEncoded}/{_maScoreClientConfiguration.PlayerResource.PutRemoveGameTypeEndpoint}?gameTypeId={gameTypeIdEncoded}";
             await _httpClient.PutAsync(url);
         }
     }
