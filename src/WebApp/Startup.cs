@@ -30,6 +30,9 @@ namespace WebApp
 
             services.AddTransient<MaScore.EloThereUI.Domain.Repositories.IGameTypeRepository, MaScore.EloThereUI.Infrastructure.Repositories.GameTypeRepository>();
             services.AddTransient<MaScore.EloThereUI.Application.Services.GameTypeService>();
+
+            services.AddTransient<MaScore.EloThereUI.Domain.Repositories.IPlayerRepository, MaScore.EloThereUI.Infrastructure.Repositories.PlayerRepository>();
+            services.AddTransient<MaScore.EloThereUI.Application.Services.PlayerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,5 +13,6 @@
 /node_modules
 /wwwroot/node_modules
 
+appsettings.*.json
 
 # End of https://www.gitignore.io/api/dotnetcore
