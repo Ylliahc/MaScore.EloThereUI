@@ -1,6 +1,6 @@
 namespace MaScore.EloThereUI.Infrastructure.Configurations
 {
-    public class PlayerResourceConfiguration
+    public class PlayerResourceConfiguration : IResourceConfiguration
     {
         public string ResourceName { get; set; } 
         public string GetByGameTypeIdEndpoint { get; set; }
