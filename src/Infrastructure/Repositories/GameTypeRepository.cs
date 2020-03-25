@@ -24,7 +24,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
                 throw new System.ArgumentException("message", nameof(playerId));
             }
 
-            var url = $"{_maScoreClientConfiguration.GameTypeResource.ResourceName}/{_maScoreClientConfiguration.GameTypeResource.GetByPlayerIdEndPoint}/{playerId}";
+            var url = $"{_maScoreClientConfiguration.GameTypeResourceConfiguration.ResourceName}/{_maScoreClientConfiguration.GameTypeResourceConfiguration.GetByPlayerIdEndPoint}/{playerId}";
             var httpResponseMessage = await _httpClient.GetAsync(url);
             var toto = httpResponseMessage.EnsureSuccessStatusCode();
             
@@ -38,7 +38,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
                 throw new System.ArgumentException("message", nameof(gameTypeId));
             }
 
-            var url = $"{_maScoreClientConfiguration.GameTypeResource.ResourceName}/{gameTypeId}";
+            var url = $"{_maScoreClientConfiguration.GameTypeResourceConfiguration.ResourceName}/{gameTypeId}";
             var httpResponseMessage = await _httpClient.GetAsync(url);
             
             return JsonConvert.DeserializeObject<GameType>( await httpResponseMessage.Content.ReadAsStringAsync());

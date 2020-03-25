@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace MaScore.EloThereUI.Infrastructure.Entities
 {
-    public class Player : EntityBase
+    public class PlayerBase : EntityBase
     {
         [JsonProperty("firstname")]
         public string FirstName { get; set; }
