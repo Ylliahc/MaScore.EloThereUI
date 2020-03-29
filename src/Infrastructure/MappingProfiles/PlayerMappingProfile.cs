@@ -2,6 +2,9 @@ using AutoMapper;
 
 namespace MaScore.EloThereUI.Infrastructure.MappingProfiles
 {
+    /// <summary>
+    /// Mapping profile for player
+    /// </summary>
     public class PlayerMappingProfile : Profile
     {
         public PlayerMappingProfile()

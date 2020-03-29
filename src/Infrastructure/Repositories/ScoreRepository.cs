@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using MaScore.EloThereUI.Domain.Entities;
+using AutoMapper;
 using MaScore.EloThereUI.Domain.Repositories;
 using MaScore.EloThereUI.Infrastructure.Clients;
 using MaScore.EloThereUI.Infrastructure.Configurations;
@@ -12,14 +12,18 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
     /// </summary>
     public class ScoreRepository : MaScoreRepositoryBase, IScoreRepository
     {
-        public ScoreRepository(MaScoreApiClient httpClient, IOptions<MaScoreClientConfiguration> maScoreClientConfiguration) : base(httpClient, maScoreClientConfiguration)
+        public ScoreRepository(
+            MaScoreApiClient httpClient,
+            IOptions<MaScoreClientConfiguration> maScoreClientConfiguration,
+            IMapper mapper) 
+            : base(httpClient, maScoreClientConfiguration, mapper)
         {
         }
 
-        public async Task<Score> GetAsync(string scoreId)
+        public async Task<Domain.Entities.Score> GetAsync(string scoreId)
         {
             var url = $"{_maScoreClientConfiguration.ScoreResourceConfiguration.ResourceName}/{scoreId}";
-            return await _httpClient.GetAsync<Score>(url);
+            return _mapper.Map<Domain.Entities.Score>(await _httpClient.GetAsync<Entities.Score>(url));
         }
     }
 }

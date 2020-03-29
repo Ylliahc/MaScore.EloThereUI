@@ -7,6 +7,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Automapper" Version="9.0.0" />
+    <PackageReference Include="Automapper.extensions.microsoft.dependencyinjection" Version="7.0.0" />
     <PackageReference Include="Blazorise.BootStrap" Version="0.8.8.1" />
   </ItemGroup>
 

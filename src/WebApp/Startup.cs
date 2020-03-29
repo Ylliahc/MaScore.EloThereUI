@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,10 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor(); 
+            services.AddServerSideBlazor();
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddSingleton<WeatherForecastService>();
 
             services.Configure<MaScore.EloThereUI.Infrastructure.Configurations.MaScoreClientConfiguration>(Configuration.GetSection("MaScoreApi"));
