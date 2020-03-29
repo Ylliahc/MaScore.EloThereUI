@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MaScore.EloThereUI.Domain.Repositories;
 using MaScore.EloThereUI.Infrastructure.Configurations;
-using Newtonsoft.Json;
 using MaScore.EloThereUI.Infrastructure.Clients;
 using AutoMapper;
 using MaScore.EloThereUI.Infrastructure.Entities;
