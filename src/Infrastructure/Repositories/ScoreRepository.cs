@@ -22,7 +22,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
 
         public async Task<Domain.Entities.Score> GetAsync(string scoreId)
         {
-            var url = $"{_maScoreClientConfiguration.ScoreResourceConfiguration.ResourceName}/{scoreId}";
+            var url = $"{_maScoreClientConfiguration.ScoreResource.ResourceName}/{scoreId}";
             return _mapper.Map<Domain.Entities.Score>(await _httpClient.GetAsync<Entities.Score>(url));
         }
     }

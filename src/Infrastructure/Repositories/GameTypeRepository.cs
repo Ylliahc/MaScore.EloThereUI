@@ -26,7 +26,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
                 throw new System.ArgumentException("message", nameof(playerId));
             }
 
-            var url = $"{_maScoreClientConfiguration.GameTypeResourceConfiguration.ResourceName}/{_maScoreClientConfiguration.GameTypeResourceConfiguration.GetByPlayerIdEndPoint}/{playerId}";
+            var url = $"{_maScoreClientConfiguration.GameTypeResource.ResourceName}/{_maScoreClientConfiguration.GameTypeResource.GetByPlayerIdEndPoint}/{playerId}";
             
             return _mapper.Map<Domain.Entities.GameType>(await _httpClient.GetAsync<GameType>(url));
         }
@@ -38,7 +38,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
                 throw new System.ArgumentException("message", nameof(gameTypeId));
             }
 
-            var url = $"{_maScoreClientConfiguration.GameTypeResourceConfiguration.ResourceName}/{gameTypeId}";
+            var url = $"{_maScoreClientConfiguration.GameTypeResource.ResourceName}/{gameTypeId}";
             
             return _mapper.Map<Domain.Entities.GameType>(await _httpClient.GetAsync<GameType>(url));
         }

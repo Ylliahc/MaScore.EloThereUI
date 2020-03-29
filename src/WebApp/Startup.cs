@@ -24,7 +24,7 @@ namespace WebApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup), typeof(MaScore.EloThereUI.Infrastructure.Entities.EntityBase));
 
             services.AddSingleton<WeatherForecastService>();
 

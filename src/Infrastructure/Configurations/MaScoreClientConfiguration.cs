@@ -10,16 +10,16 @@ namespace MaScore.EloThereUI.Infrastructure.Configurations
         /// Configuration for game type resource
         /// </summary>
         /// <value></value>
-        public GameTypeResourceConfiguration GameTypeResourceConfiguration {get;set;}
+        public GameTypeResourceConfiguration GameTypeResource {get;set;}
         /// <summary>
         /// Configuration for player resource
         /// </summary>
         /// <value></value>
-        public PlayerResourceConfiguration PlayerResourceConfiguration {get;set;}
+        public PlayerResourceConfiguration PlayerResource {get;set;}
         /// <summary>
         /// Configuration for score resource
         /// </summary>
         /// <value></value>
-        public ScoreResourceConfiguration ScoreResourceConfiguration {get;set;}
+        public ScoreResourceConfiguration ScoreResource {get;set;}
     }
 }
