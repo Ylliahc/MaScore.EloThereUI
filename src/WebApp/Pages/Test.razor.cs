@@ -1,6 +1,5 @@
 using MaScore.EloThereUI.Application.Services;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Threading.Tasks;
 
 namespace WebApp
@@ -15,7 +14,7 @@ namespace WebApp
 
         public async Task HandleValidSubmit()
         {
-            var gameType = await _gameTypeService.Get(_TestForm.GameTypeId);
+            var gameType = await _gameTypeService.GetAsync(_TestForm.GameTypeId);
             GameTypeName = gameType.Name;
         }
     }

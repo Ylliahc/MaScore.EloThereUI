@@ -1,0 +1,11 @@
+@page "/Player"
+@inherits PlayerComponentBase
+@using WebApp.Components
+
+
+<p>Test</p>
+
+<input type="text" @bind-value="PlayerId" />
+<button @onclick="GetPlayer">Test</button>
+
+<PlayerGeneralPartComponent @bind-PlayerGeneralInformationViewModel="@PlayerGeneralInformationViewModel"></PlayerGeneralPartComponent>

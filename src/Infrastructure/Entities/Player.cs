@@ -1,12 +1,18 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace MaScore.EloThereUI.Infrastructure.Entities
 {
-    public class Player : EntityBase
+    /// <summary>
+    /// Player entity received from api
+    /// </summary>
+    public class Player : PlayerBase
     {
-        [JsonProperty("firstname")]
-        public string FirstName { get; set; }
-        [JsonProperty("lastname")]
-        public string LastName { get; set; }
+        /// <summary>
+        /// Game types player played
+        /// </summary>
+        /// <value></value>
+        [JsonProperty("gameTypes")]
+        public List<GameType> GameTypes {get;set;}
     }
 }

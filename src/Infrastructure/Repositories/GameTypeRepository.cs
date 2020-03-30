@@ -1,28 +1,25 @@
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using MaScore.EloThereUI.Domain.Entities;
 using MaScore.EloThereUI.Domain.Repositories;
 using MaScore.EloThereUI.Infrastructure.Configurations;
-using Newtonsoft.Json;
+using MaScore.EloThereUI.Infrastructure.Clients;
+using AutoMapper;
+using MaScore.EloThereUI.Infrastructure.Entities;
 
 namespace MaScore.EloThereUI.Infrastructure.Repositories
 {
-    public class GameTypeRepository : IGameTypeRepository
+    public class GameTypeRepository : MaScoreRepositoryBase , IGameTypeRepository
     {
-        private readonly HttpClient _httpClient;
-        private readonly MaScoreClientConfiguration _maScoreClientConfiguration;
 
         public GameTypeRepository(
-            HttpClient httpClient,
-            IOptions<MaScoreClientConfiguration> maScoreClientConfiguration)
+            MaScoreApiClient httpClient,
+            IOptions<MaScoreClientConfiguration> maScoreClientConfiguration,
+            IMapper mapper)
+            : base(httpClient,maScoreClientConfiguration,mapper)
         {
-            _httpClient = httpClient;
-            _maScoreClientConfiguration = maScoreClientConfiguration.Value;
-
-            _httpClient.BaseAddress = new System.Uri(_maScoreClientConfiguration.Url);
+            
         }
-        public async Task<GameType> GetByPlayerIdAsync(string playerId)
+        public async Task<Domain.Entities.GameType> GetByPlayerIdAsync(string playerId)
         {
             if (string.IsNullOrWhiteSpace(playerId))
             {
@@ -30,13 +27,11 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
             }
 
             var url = $"{_maScoreClientConfiguration.GameTypeResource.ResourceName}/{_maScoreClientConfiguration.GameTypeResource.GetByPlayerIdEndPoint}/{playerId}";
-            var httpResponseMessage = await _httpClient.GetAsync(url);
-            var toto = httpResponseMessage.EnsureSuccessStatusCode();
             
-            return JsonConvert.DeserializeObject<GameType>( await toto.Content.ReadAsStringAsync());
+            return _mapper.Map<Domain.Entities.GameType>(await _httpClient.GetAsync<GameType>(url));
         }
 
-        public async Task<GameType> GetAsync(string gameTypeId)
+        public async Task<Domain.Entities.GameType> GetAsync(string gameTypeId)
         {
             if (string.IsNullOrWhiteSpace(gameTypeId))
             {
@@ -44,9 +39,8 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
             }
 
             var url = $"{_maScoreClientConfiguration.GameTypeResource.ResourceName}/{gameTypeId}";
-            var httpResponseMessage = (await _httpClient.GetAsync(url)).EnsureSuccessStatusCode();
             
-            return JsonConvert.DeserializeObject<GameType>( await httpResponseMessage.Content.ReadAsStringAsync());
+            return _mapper.Map<Domain.Entities.GameType>(await _httpClient.GetAsync<GameType>(url));
         }
     }
 }
