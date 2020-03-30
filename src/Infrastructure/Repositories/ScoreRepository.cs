@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using MaScore.EloThereUI.Domain.Repositories;
@@ -28,8 +29,11 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
 
         public async Task<Domain.Entities.Score> GetHistory(string playerId, string gameTypeId, int limit)
         {
-            //TODO
-            var url = $"";
+            var url = string.Format(format: "?gameTypeId={0}&playerId={1}&last={2}",
+                arg0: WebUtility.UrlEncode(gameTypeId),
+                arg1: WebUtility.UrlEncode(playerId),
+                arg2: WebUtility.UrlEncode(limit.ToString())
+                );
             return _mapper.Map<Domain.Entities.Score>(await _httpClient.GetAsync<Entities.Score>(url));
         }
     }
