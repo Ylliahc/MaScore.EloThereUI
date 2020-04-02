@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using MaScore.EloThereUI.Domain.Entities;
 using MaScore.EloThereUI.Domain.Repositories;
 
@@ -19,9 +22,23 @@ namespace MaScore.EloThereUI.Application.Services
             _scoreRepository = scoreRepository;
         }
 
-        public PlayerStatistics GetPlayerStatistics(string playerId)
+        public async Task<PlayerStatistics> GetPlayerStatistics(string playerId)
         {
-            throw new System.NotImplementedException();
+            var player = await _playerRepository.GetPlayerAsync(id: playerId);
+            var scores = new List<Score>();
+            player.GameTypes.ForEach(
+                async gameType => scores.AddRange(
+                    await _scoreRepository.GetHistory(playerId: playerId, gameTypeId: gameType.Id, 0)
+                )
+            );
+
+            var playerStatistics = new PlayerStatistics(){
+                NumberGameTypes = player.GameTypes.Count,
+                FirstGameDate = scores.Min( x => x.Date),
+                LastGameDate = scores.Max(x => x.Date),
+                NumberGamesPlayed = scores.Count()
+            };
+            return playerStatistics;
         }
     }
 }
