@@ -32,13 +32,30 @@ namespace MaScore.EloThereUI.Application.Services
                 )
             );
 
+            
             var playerStatistics = new PlayerStatistics(){
                 NumberGameTypes = player.GameTypes.Count,
                 FirstGameDate = scores.Min( x => x.Date),
                 LastGameDate = scores.Max(x => x.Date),
-                NumberGamesPlayed = scores.Count()
+                NumberGamesPlayed = scores.Count(),
+                TotalPoints = ComputeTotalPoints(scores)
             };
             return playerStatistics;
+        }
+
+        private int ComputeTotalPoints(List<Score> scores)
+        {
+            var scoresGrouped = scores.OrderBy(x => x.Date)
+                                .GroupBy( x=> x.GameTypeId)
+                                .ToDictionary( x=> x.Key, x => x.ToList());
+                                
+            int totalPoints = 0;
+            foreach(var gameTypeId in scoresGrouped.Keys)
+            {
+                totalPoints += scoresGrouped[gameTypeId].FirstOrDefault()?.Value ?? 0;
+            }
+
+            return totalPoints;
         }
     }
 }
