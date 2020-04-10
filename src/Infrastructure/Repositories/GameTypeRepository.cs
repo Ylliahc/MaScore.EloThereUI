@@ -6,6 +6,7 @@ using MaScore.EloThereUI.Infrastructure.Clients;
 using AutoMapper;
 using MaScore.EloThereUI.Infrastructure.Entities;
 using System.Net;
+using System.Collections.Generic;
 
 namespace MaScore.EloThereUI.Infrastructure.Repositories
 {
@@ -20,7 +21,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
         {
             
         }
-        public async Task<Domain.Entities.GameType> GetByPlayerIdAsync(string playerId)
+        public async Task<List<Domain.Entities.GameType>> GetPlayerGametypes(string playerId)
         {
             if (string.IsNullOrWhiteSpace(playerId))
             {
@@ -29,7 +30,7 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
 
             var url = $"{_maScoreClientConfiguration.GameTypeResource.ResourceName}/{_maScoreClientConfiguration.GameTypeResource.GetByPlayerIdEndPoint}/{WebUtility.UrlEncode(playerId)}";
             
-            return _mapper.Map<Domain.Entities.GameType>(await _httpClient.GetAsync<GameType>(url));
+            return _mapper.Map<List<Domain.Entities.GameType>>(await _httpClient.GetAsync<List<GameType>>(url));
         }
 
         public async Task<Domain.Entities.GameType> GetAsync(string gameTypeId)

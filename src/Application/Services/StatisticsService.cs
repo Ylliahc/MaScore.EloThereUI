@@ -11,30 +11,30 @@ namespace MaScore.EloThereUI.Application.Services
     /// </summary>
     public class StatisticsService
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IGameTypeRepository _gameTypeRepository;
         private readonly IScoreRepository _scoreRepository;
 
         public StatisticsService(
-            IPlayerRepository playerRepository,
+            IGameTypeRepository gameTypeRepository,
             IScoreRepository scoreRepository)
         {
-            _playerRepository = playerRepository;
+            _gameTypeRepository = gameTypeRepository;
             _scoreRepository = scoreRepository;
         }
 
         public async Task<PlayerStatistics> GetPlayerStatistics(string playerId)
         {
-            var player = await _playerRepository.GetPlayerAsync(id: playerId);
+            var gameTypes = await _gameTypeRepository.GetPlayerGametypes(playerId: playerId);
             var scores = new List<Score>();
-            player.GameTypes.ForEach(
+            
+            gameTypes.ForEach(
                 async gameType => scores.AddRange(
                     await _scoreRepository.GetHistory(playerId: playerId, gameTypeId: gameType.Id, 0)
                 )
             );
-
             
             var playerStatistics = new PlayerStatistics(){
-                NumberGameTypes = player.GameTypes.Count,
+                NumberGameTypes = gameTypes.Count,
                 FirstGameDate = scores.Min( x => x.Date),
                 LastGameDate = scores.Max(x => x.Date),
                 NumberGamesPlayed = scores.Count(),
@@ -45,7 +45,7 @@ namespace MaScore.EloThereUI.Application.Services
 
         private int ComputeTotalPoints(List<Score> scores)
         {
-            var scoresGrouped = scores.OrderBy(x => x.Date)
+            var scoresGrouped = scores.OrderByDescending(x => x.Date)
                                 .GroupBy( x=> x.GameTypeId)
                                 .ToDictionary( x=> x.Key, x => x.ToList());
                                 

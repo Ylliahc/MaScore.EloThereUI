@@ -13,26 +13,42 @@ namespace MaScore.EloThereUI.Application.UnitTests.Services
     /// </summary>
     public class ServiceTestsBase
     {
-        public IScoreRepository GetScoreRepository(PlayerStatistics playerExpectedStats, Player player)
+        public IScoreRepository GetScoreRepository(PlayerStatistics playerExpectedStats, List<GameType> gameTypes)
         {
             var repositoryMock = new Mock<IScoreRepository>();
+            var scores = GetScores(playerExpectedStats
+                    ,gameTypes);
+            var fixture = new Fixture();
+            repositoryMock.Setup(
+                x => x.GetHistory(
+                    It.IsAny<string>(),
+                    gameTypes[0].Id,
+                    It.IsAny<int>()))
+                .ReturnsAsync(scores.Where(s => s.GameTypeId == gameTypes[0].Id).ToList());
+            
+            repositoryMock.Setup(
+                x => x.GetHistory(
+                    It.IsAny<string>(),
+                    gameTypes[1].Id,
+                    It.IsAny<int>()))
+                .ReturnsAsync(scores.Where(s => s.GameTypeId == gameTypes[1].Id).ToList());
 
             repositoryMock.Setup(
                 x => x.GetHistory(
                     It.IsAny<string>(),
-                    It.IsAny<string>(),
+                    gameTypes[2].Id,
                     It.IsAny<int>()))
-                .ReturnsAsync(GetScores(playerExpectedStats
-                    ,player));
+                .ReturnsAsync(scores.Where(s => s.GameTypeId == gameTypes[2].Id).ToList());
 
             return repositoryMock.Object;
         }
 
-        public IPlayerRepository GetPlayerRepository(PlayerStatistics playerExpectedStats)
+        public IGameTypeRepository GetGameTypeRepository(PlayerStatistics playerExpectedStats)
         {
-            var repositoryMock = new Mock<IPlayerRepository>();
-            repositoryMock.Setup(x => x.GetPlayerAsync(It.IsAny<string>()))
-                .ReturnsAsync(GetPlayer(playerExpectedStats));
+            var repositoryMock = new Mock<IGameTypeRepository>();
+            var fixture = new Fixture();
+            repositoryMock.Setup( x => x.GetPlayerGametypes(It.IsAny<string>()))
+                .ReturnsAsync(fixture.CreateMany<GameType>(playerExpectedStats.NumberGameTypes).ToList());
 
             return repositoryMock.Object;
         }
@@ -41,7 +57,7 @@ namespace MaScore.EloThereUI.Application.UnitTests.Services
         {
             var fixture = new Fixture();
 
-            var firstDate = new DateTime(2020,06,01);
+            var firstDate = new DateTime(2020, 06, 01);
 
             return new PlayerStatistics()
             {
@@ -53,7 +69,7 @@ namespace MaScore.EloThereUI.Application.UnitTests.Services
             };
         }
 
-        public List<Score> GetScores(PlayerStatistics expected,Player player)
+        public List<Score> GetScores(PlayerStatistics expected,List<GameType> GameTypes)
         {
             var fixture = new Fixture();
 
@@ -61,12 +77,12 @@ namespace MaScore.EloThereUI.Application.UnitTests.Services
 
             var scores = fixture.CreateMany<Score>(expected.NumberGamesPlayed).ToList();
 
-            scores[0].GameTypeId = player.GameTypes[0].Id;
-            scores[1].GameTypeId = player.GameTypes[1].Id;
-            scores[2].GameTypeId = player.GameTypes[2].Id;
-            scores[3].GameTypeId = player.GameTypes[0].Id;
-            scores[4].GameTypeId = player.GameTypes[1].Id;
-            scores[5].GameTypeId = player.GameTypes[2].Id;
+            scores[0].GameTypeId = GameTypes[0].Id;
+            scores[1].GameTypeId = GameTypes[1].Id;
+            scores[2].GameTypeId = GameTypes[2].Id;
+            scores[3].GameTypeId = GameTypes[0].Id;
+            scores[4].GameTypeId = GameTypes[1].Id;
+            scores[5].GameTypeId = GameTypes[2].Id;
 
             scores[0].Date = expected.FirstGameDate.AddDays(1);
             scores[1].Date = expected.FirstGameDate.AddDays(2);
@@ -83,18 +99,6 @@ namespace MaScore.EloThereUI.Application.UnitTests.Services
             scores[5].Value = 25;
 
             return scores;
-        }
-
-        public Player GetPlayer(PlayerStatistics expected)
-        {
-            var fixture = new Fixture();
-            var player = new Player()
-            {
-                LastName = "Titi",
-                FirstName = "Toto",
-                GameTypes = fixture.CreateMany<GameType>(expected.NumberGameTypes).ToList()
-            };
-            return player;
         }
     }
 }

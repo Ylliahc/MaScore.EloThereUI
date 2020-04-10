@@ -7,14 +7,14 @@ namespace MaScore.EloThereUI.Application.UnitTests.Services
     public class StatisticsServiceTests : ServiceTestsBase
     {
         [Fact]
-        public void GetPlayerStatistics_When_Expect()
+        public void GetPlayerStatistics_WhenNominalCase_ExpectNoError()
         {
             //Arrange
             var playerExpectedStats = GetExpectedPlayerStatistics();
-            var player = GetPlayer(playerExpectedStats);
-            var scoreRepository = GetScoreRepository(playerExpectedStats, player);
-            var playerRepository = GetPlayerRepository(playerExpectedStats);
-            var statisticService = new StatisticsService(playerRepository: playerRepository,scoreRepository: scoreRepository);
+            var gameTypeRepository = GetGameTypeRepository(playerExpectedStats);
+            var gameTypes = gameTypeRepository.GetPlayerGametypes(string.Empty).Result;
+            var scoreRepository = GetScoreRepository(playerExpectedStats, gameTypes);
+            var statisticService = new StatisticsService(gameTypeRepository,scoreRepository: scoreRepository);
             //Act
             var result = statisticService.GetPlayerStatistics("toto").Result;
             //Assert
