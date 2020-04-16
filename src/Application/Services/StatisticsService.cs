@@ -22,7 +22,7 @@ namespace MaScore.EloThereUI.Application.Services
             _scoreRepository = scoreRepository;
         }
 
-        public async Task<PlayerStatistics> GetPlayerStatistics(string playerId)
+        public async Task<PlayerStatistics> GetPlayerStatisticsAsync(string playerId)
         {
             var gameTypes = await _gameTypeRepository.GetPlayerGametypes(playerId: playerId);
             var scores = new List<Score>();

@@ -3,9 +3,10 @@
 @using WebApp.Components
 
 
-<p>Test</p>
+<p>Player Page</p>
 
 <input type="text" @bind-value="PlayerId" />
-<button @onclick="GetPlayer">Test</button>
+<button @onclick="HandleClick">Test</button>
 
 <PlayerGeneralPartComponent @bind-PlayerGeneralInformationViewModel="@PlayerGeneralInformationViewModel"></PlayerGeneralPartComponent>
+<PlayerStatisticsComponent @bind-PlayerStatisticsViewModel="@PlayerStatisticsViewModel"></PlayerStatisticsComponent>

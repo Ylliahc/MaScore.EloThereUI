@@ -23,7 +23,7 @@ namespace WebApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-
+            services.AddLogging();
             services.AddAutoMapper(typeof(Startup), typeof(MaScore.EloThereUI.Infrastructure.Entities.EntityBase));
 
             services.AddSingleton<WeatherForecastService>();
@@ -32,11 +32,18 @@ namespace WebApp
 
             services.AddHttpClient<MaScore.EloThereUI.Infrastructure.Clients.MaScoreApiClient>();
 
-            services.AddTransient<MaScore.EloThereUI.Domain.Repositories.IGameTypeRepository, MaScore.EloThereUI.Infrastructure.Repositories.GameTypeRepository>();
+            services.AddTransient<MaScore.EloThereUI.Domain.Repositories.IGameTypeRepository,
+                                    MaScore.EloThereUI.Infrastructure.Repositories.GameTypeRepository>();
             services.AddTransient<MaScore.EloThereUI.Application.Services.GameTypeService>();
 
-            services.AddTransient<MaScore.EloThereUI.Domain.Repositories.IPlayerRepository, MaScore.EloThereUI.Infrastructure.Repositories.PlayerRepository>();
+            services.AddTransient<MaScore.EloThereUI.Domain.Repositories.IPlayerRepository,
+                                    MaScore.EloThereUI.Infrastructure.Repositories.PlayerRepository>();
             services.AddTransient<MaScore.EloThereUI.Application.Services.PlayerService>();
+
+            services.AddTransient<MaScore.EloThereUI.Domain.Repositories.IScoreRepository,
+                                    MaScore.EloThereUI.Infrastructure.Repositories.ScoreRepository>();
+
+            services.AddTransient<MaScore.EloThereUI.Application.Services.StatisticsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

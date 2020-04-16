@@ -8,6 +8,6 @@ namespace WebApp.Components
         public ViewModels.PlayerStatisticsViewModel PlayerStatisticsViewModel { get;set;}
 
         [Parameter]
-        public EventCallback PlayerStatisticsViewModelChanged {get;set;}
+        public EventCallback<ViewModels.PlayerStatisticsViewModel> PlayerStatisticsViewModelChanged {get;set;}
     }
 }
