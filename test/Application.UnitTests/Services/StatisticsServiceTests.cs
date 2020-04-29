@@ -16,7 +16,22 @@ namespace MaScore.EloThereUI.Application.UnitTests.Services
             var scoreRepository = GetScoreRepository(playerExpectedStats, gameTypes);
             var statisticService = new StatisticsService(gameTypeRepository,scoreRepository: scoreRepository);
             //Act
-            var result = statisticService.GetPlayerStatistics("toto").Result;
+            var result = statisticService.GetPlayerStatisticsAsync("toto").Result;
+            //Assert
+            result.Should().BeEquivalentTo(playerExpectedStats);
+        }
+
+        [Fact]
+        public void GetPlayerStatistics_WhenNoGame_ExpectNoError()
+        {
+            //Arrange
+            var playerExpectedStats = GetExpectedPlayerStatistics();
+            var gameTypeRepository = GetGameTypeRepository(playerExpectedStats);
+            var gameTypes = gameTypeRepository.GetPlayerGametypes(string.Empty).Result;
+            var scoreRepository = GetScoreRepository(playerExpectedStats, gameTypes);
+            var statisticService = new StatisticsService(gameTypeRepository,scoreRepository: scoreRepository);
+            //Act
+            var result = statisticService.GetPlayerStatisticsAsync("toto").Result;
             //Assert
             result.Should().BeEquivalentTo(playerExpectedStats);
         }

@@ -13,16 +13,12 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
         public HttpClient Client { get; }
         private readonly MaScoreClientConfiguration _maScoreClientConfiguration;
 
-        private readonly ILogger _logger;
-
         public MaScoreApiClient(
-            ILogger logger,
             HttpClient httpClient,
             IOptions<MaScoreClientConfiguration> maScoreClientConfiguration)
         {
             Client = httpClient;
             _maScoreClientConfiguration = maScoreClientConfiguration.Value;
-            _logger = logger;
             ConfigureClient();
         }
 
@@ -53,8 +49,6 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
                 throw new System.ArgumentNullException(nameof(body));
             
             var bodyContent = GetStringContent(body);
-            
-            _logger.LogInformation($"HTTP POST {endpoint}");
 
             var response = await Client.PostAsync(endpoint, bodyContent);
             response.EnsureSuccessStatusCode();
@@ -83,7 +77,6 @@ namespace MaScore.EloThereUI.Infrastructure.Clients
         /// <returns>Http response message.</returns>
         public async Task<HttpResponseMessage> GetAsync(string url)
         {
-            _logger.LogInformation($"HTTP GET {url}");
             var response = await Client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return response;

@@ -27,11 +27,12 @@ namespace MaScore.EloThereUI.Application.Services
             var gameTypes = await _gameTypeRepository.GetPlayerGametypes(playerId: playerId);
             var scores = new List<Score>();
             
-            gameTypes.ForEach(
-                async gameType => scores.AddRange(
+            foreach(var gameType in gameTypes)
+            {
+                scores.AddRange(
                     await _scoreRepository.GetHistory(playerId: playerId, gameTypeId: gameType.Id, 0)
-                )
-            );
+                );
+            }
             
             var playerStatistics = new PlayerStatistics(){
                 NumberGameTypes = gameTypes.Count,

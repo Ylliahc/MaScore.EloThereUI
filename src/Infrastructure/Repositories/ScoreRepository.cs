@@ -30,10 +30,12 @@ namespace MaScore.EloThereUI.Infrastructure.Repositories
 
         public async Task<List<Domain.Entities.Score>> GetHistory(string playerId, string gameTypeId, int limit)
         {
-            var url = string.Format(format: "?gameTypeId={0}&playerId={1}&last={2}",
-                arg0: WebUtility.UrlEncode(gameTypeId),
-                arg1: WebUtility.UrlEncode(playerId),
-                arg2: WebUtility.UrlEncode(limit.ToString())
+            var url = string.Format(format: "{0}/{1}?gameTypeId={2}&playerId={3}&last={4}",
+                _maScoreClientConfiguration.ScoreResource.ResourceName,
+                _maScoreClientConfiguration.ScoreResource.HistoryEndpoint,
+                WebUtility.UrlEncode(gameTypeId),
+                WebUtility.UrlEncode(playerId),
+                WebUtility.UrlEncode(limit.ToString())
                 );
             return _mapper.Map<List<Domain.Entities.Score>>(await _httpClient.GetAsync<List<Entities.Score>>(url));
         }
